@@ -45,13 +45,12 @@ document.getElementById('overlay').addEventListener('click', () => {
   document.getElementById('overlay').classList.remove('show');
 });
 
-// ===== SCHEDULE (ИЗМЕНЕННАЯ ЛОГИКА) =====
+// ===== SCHEDULE (НОВАЯ ЛОГИКА) =====
 
-// Вспомогательная функция для получения всех уникальных времен из данных
 function getAllTimes() {
   const times = new Set();
   state.schedule.forEach(l => times.add(l.time));
-  // Сортировка, чтобы время шло по порядку
+  // Сортировка по алфавиту/числам
   return Array.from(times).sort((a, b) => a.localeCompare(b));
 }
 
@@ -71,7 +70,7 @@ function selectColor(el) {
 
 function saveLesson() {
   const nameInput = document.getElementById('lesson-name');
-  const timeInput = document.getElementById('lesson-time'); // Теперь это текстовое поле
+  const timeInput = document.getElementById('lesson-time'); 
   const dayInput = document.getElementById('lesson-day');
 
   const name = nameInput.value.trim();
@@ -84,7 +83,7 @@ function saveLesson() {
   state.schedule.push({
     id: Date.now().toString(),
     name: name,
-    time: time, // Сохраняем твой текст
+    time: time, 
     day: day,
     color: selectedColor,
   });
@@ -93,7 +92,6 @@ function saveLesson() {
   renderSchedule();
   closeScheduleModal();
 
-  // Очистка полей
   nameInput.value = '';
   timeInput.value = '';
 }
@@ -146,7 +144,7 @@ function renderSchedule() {
   }
 }
 
-// ===== TASKS (ОСТАВЛЕНО БЕЗ ИЗМЕНЕНИЙ) =====
+// ===== TASKS =====
 function addTask() {
   const input = document.getElementById('task-input');
   const text = input.value.trim();
@@ -241,7 +239,7 @@ function renderImportant() {
   });
 }
 
-// ===== PHOTOS (ОСТАВЛЕНО БЕЗ ИЗМЕНЕНИЙ) =====
+// ===== PHOTOS =====
 function renderPhotos() {
   const container = document.getElementById('photos-grid');
   if (!container) return;
@@ -296,14 +294,6 @@ function openPhotoModal(id) {
 function closePhotoModal() {
   document.getElementById('photoModal').classList.remove('show');
 }
-
-// Close modals on backdrop click
-document.getElementById('scheduleModal').addEventListener('click', function(e) {
-  if (e.target === this) closeScheduleModal();
-});
-document.getElementById('photoModal').addEventListener('click', function(e) {
-  if (e.target === this) closePhotoModal();
-});
 
 // ===== UTILS =====
 function escapeHtml(str) {
