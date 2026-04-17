@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мой Планировщик</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- SIDEBAR NAV -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <span class="logo-icon">📚</span>
+    <span class="logo-text">Планировщик</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#" class="nav-link active" data-section="schedule">
+      <span class="nav-icon">🗓</span><span>Расписание</span>
+    </a></li>
+    <li><a href="#" class="nav-link" data-section="tasks">
+      <span class="nav-icon">✅</span><span>Задачи</span>
+    </a></li>
+    <li><a href="#" class="nav-link" data-section="important">
+      <span class="nav-icon">⭐</span><span>Важное</span>
+    </a></li>
+    <li><a href="#" class="nav-link" data-section="photos">
+      <span class="nav-icon">🖼</span><span>Фото</span>
+    </a></li>
+  </ul>
+  <div class="sidebar-footer">
+    <span id="current-date"></span>
+  </div>
+</nav>
+
+<!-- MOBILE TOP BAR -->
+<div class="topbar">
+  <button class="burger-btn" id="burgerBtn">☰</button>
+  <span class="topbar-title">Планировщик</span>
+</div>
+<div class="overlay" id="overlay"></div>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+
+  <!-- ===== РАСПИСАНИЕ ===== -->
+  <section class="section active" id="section-schedule">
+    <div class="section-header">
+      <h1>Расписание</h1>
+      <button class="btn-primary" onclick="openScheduleModal()">+ Добавить урок</button>
+    </div>
+
+    <div class="schedule-grid">
+      <div class="schedule-day-header"></div>
+      <div class="schedule-day-header">Пн</div>
+      <div class="schedule-day-header">Вт</div>
+      <div class="schedule-day-header">Ср</div>
+      <div class="schedule-day-header">Чт</div>
+      <div class="schedule-day-header">Пт</div>
+    </div>
+    <div id="schedule-table"></div>
+
+    <div class="empty-state" id="schedule-empty" style="display:none">
+      <p>Расписание пусто. Добавь первый урок!</p>
+    </div>
+  </section>
+
+  <!-- ===== ЗАДАЧИ ===== -->
+  <section class="section" id="section-tasks">
+    <div class="section-header">
+      <h1>Дневные задачи</h1>
+      <div class="tasks-stats" id="tasks-stats">0 / 0 выполнено</div>
+    </div>
+
+    <div class="task-input-row">
+      <input type="text" id="task-input" placeholder="Новая задача..." class="input-field" onkeydown="if(event.key==='Enter') addTask()">
+      <select id="task-priority" class="select-field">
+        <option value="normal">Обычная</option>
+        <option value="high">Важная</option>
+        <option value="low">Низкая</option>
+      </select>
+      <button class="btn-primary" onclick="addTask()">Добавить</button>
+    </div>
+
+    <div class="task-filters">
+      <button class="filter-btn active" data-filter="all" onclick="filterTasks('all', this)">Все</button>
+      <button class="filter-btn" data-filter="active" onclick="filterTasks('active', this)">Активные</button>
+      <button class="filter-btn" data-filter="done" onclick="filterTasks('done', this)">Выполненные</button>
+    </div>
+
+    <div id="task-list" class="task-list"></div>
+    <div class="empty-state" id="tasks-empty" style="display:none"><p>Задач нет. Добавь первую!</p></div>
+  </section>
+
+  <!-- ===== ВАЖНОЕ ===== -->
+  <section class="section" id="section-important">
+    <div class="section-header">
+      <h1>Важные дела</h1>
+      <button class="btn-primary" onclick="addNote()">+ Заметка</button>
+    </div>
+    <div id="notes-grid" class="notes-grid"></div>
+    <div class="empty-state" id="notes-empty" style="display:none"><p>Заметок нет. Добавь первую!</p></div>
+  </section>
+
+  <!-- ===== ФОТО ===== -->
+  <section class="section" id="section-photos">
+    <div class="section-header">
+      <h1>Фото</h1>
+      <label class="btn-primary" style="cursor:pointer">
+        + Добавить фото
+        <input type="file" id="photo-input" accept="image/*" multiple style="display:none" onchange="addPhotos(this)">
+      </label>
+    </div>
+    <div id="photo-gallery" class="photo-gallery"></div>
+    <div class="empty-state" id="photos-empty"><p>Фото нет. Загрузи первое!</p></div>
+  </section>
+
+</main>
+
+<!-- MODAL: Добавить урок -->
+<div class="modal-backdrop" id="scheduleModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Добавить урок</h2>
+      <button class="modal-close" onclick="closeScheduleModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <label>Предмет</label>
+      <input type="text" id="lesson-name" class="input-field" placeholder="Математика">
+      <label>Время</label>
+      <input type="text" id="lesson-time" class="input-field" placeholder="8:00 - 8:45">
+      <label>День недели</label>
+      <select id="lesson-day" class="select-field">
+        <option value="0">Понедельник</option>
+        <option value="1">Вторник</option>
+        <option value="2">Среда</option>
+        <option value="3">Четверг</option>
+        <option value="4">Пятница</option>
+      </select>
+      <label>Цвет</label>
+      <div class="color-picker">
+        <div class="color-option selected" data-color="#4f46e5" style="background:#4f46e5" onclick="selectColor(this)"></div>
+        <div class="color-option" data-color="#0891b2" style="background:#0891b2" onclick="selectColor(this)"></div>
+        <div class="color-option" data-color="#059669" style="background:#059669" onclick="selectColor(this)"></div>
+        <div class="color-option" data-color="#d97706" style="background:#d97706" onclick="selectColor(this)"></div>
+        <div class="color-option" data-color="#dc2626" style="background:#dc2626" onclick="selectColor(this)"></div>
+        <div class="color-option" data-color="#7c3aed" style="background:#7c3aed" onclick="selectColor(this)"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeScheduleModal()">Отмена</button>
+      <button class="btn-primary" onclick="saveLesson()">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Просмотр фото -->
+<div class="modal-backdrop" id="photoModal">
+  <div class="modal modal-photo">
+    <button class="modal-close" onclick="closePhotoModal()">✕</button>
+    <img id="photo-preview" src="" alt="Фото">
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
