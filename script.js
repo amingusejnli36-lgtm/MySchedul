@@ -1,6 +1,6 @@
 // ===== CONFIG & STATE =====
 const CONFIG = {
-    PASS: "1234", // Смени пароль здесь
+    PASS: "123161012", // Смени пароль здесь
     SAVE_KEY: "iplanner_pro_data"
 };
 
