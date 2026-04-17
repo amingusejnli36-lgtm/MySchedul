@@ -698,3 +698,50 @@ body {
   
   .notes-grid { grid-template-columns: 1fr; }
 }
+/* iOS ЭФФЕКТЫ */
+.locked main, .locked .sidebar {
+    filter: blur(20px);
+    pointer-events: none;
+}
+
+.ios-card {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 20px !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ios-card:active {
+    transform: scale(0.98);
+}
+
+.ios-fade {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Анимация ошибки пароля */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+.shake { animation: shake 0.4s ease-in-out; }
+
+/* Экран входа */
+.auth-modal {
+    text-align: center;
+    padding: 40px !important;
+}
+.ios-icon {
+    font-size: 50px;
+    margin-bottom: 20px;
+}
+
+/* Статус синхронизации */
+#sync-status {
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 5px;
+    transition: color 0.3s;
+}
